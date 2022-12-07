@@ -41,26 +41,28 @@ int main( int argc, char** argv ) {
             break;
         }
     }
-    Vec3b color_frame = frame.at<Vec3b>(dHeight/2,dWidth/2);   // type CV_8UC3
+    Mat frame_hsv;
+    cvtColor(frame,frame_hsv,41); //  cv::COLOR_RGB2HSV = 41
+    Vec3b color_frame_hsv = frame_hsv.at<Vec3b>(dHeight/2,dWidth/2);   // type CV_8UC3
     // cout << (int)frame.at<Vec3b>(dHeight/2,dWidth/2)[0] << " . " << (int)color_frame[0] << color_frame << (int)color_frame_hsv[0] << color_frame_hsv;
-    cout << color_frame;
+    cout << color_frame_hsv;
      // b g r in rectangle
     int color_r = 0;
     int color_g = 0;
     int color_b = 0;
-    if ((int)color_frame[0] > (int)color_frame[1] && (int)color_frame[0] > (int)color_frame[2]) {
-        color_r = 255;
-        color_g = 0;
-        color_b = 0;
-    } else if ((int)color_frame[1] > (int)color_frame[2]) {
-        color_r = 0;
-        color_g = 255;
-        color_b = 0;
-    } else {
-        color_r = 0;
-        color_g = 0;
-        color_b = 255;
-    }
+   if ((int)color_frame_hsv[0] > 0 && (int)color_frame_hsv[0] < 60) {
+       color_r = 255;
+       color_g = 0;
+       color_b = 0;
+   } else if ((int)color_frame_hsv[0] > 60 && (int)color_frame_hsv[0] < 120) {
+       color_r = 0;
+       color_g = 255;
+       color_b = 0;
+   } else {
+       color_r = 0;
+       color_g = 0;
+       color_b = 255;
+   }
     int height_rec = 300;
     int width_rec = 100;
     double x = dWidth/2 - width_rec / 2;
